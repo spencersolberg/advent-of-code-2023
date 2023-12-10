@@ -11,36 +11,50 @@ enum Card {
     Jack = 9,
     Queen = 10,
     King = 11,
-    Ace = 12
+    Ace = 12,
 }
 
 const convertToEnum = (card: string): Card => {
     switch (card) {
-        case "2": return Card.Two;
-        case "3": return Card.Three;
-        case "4": return Card.Four;
-        case "5": return Card.Five;
-        case "6": return Card.Six;
-        case "7": return Card.Seven;
-        case "8": return Card.Eight;
-        case "9": return Card.Nine;
-        case "T": return Card.Ten;
-        case "J": return Card.Jack;
-        case "Q": return Card.Queen;
-        case "K": return Card.King;
-        case "A": return Card.Ace;
-        default: throw new Error("Unrecognized card");
+        case "2":
+            return Card.Two;
+        case "3":
+            return Card.Three;
+        case "4":
+            return Card.Four;
+        case "5":
+            return Card.Five;
+        case "6":
+            return Card.Six;
+        case "7":
+            return Card.Seven;
+        case "8":
+            return Card.Eight;
+        case "9":
+            return Card.Nine;
+        case "T":
+            return Card.Ten;
+        case "J":
+            return Card.Jack;
+        case "Q":
+            return Card.Queen;
+        case "K":
+            return Card.King;
+        case "A":
+            return Card.Ace;
+        default:
+            throw new Error("Unrecognized card");
     }
-}
+};
 
-enum  HandType {
+enum HandType {
     HighCard = 0,
     OnePair = 1,
     TwoPair = 2,
     ThreeOfAKind = 3,
     FullHouse = 4,
     FourOfAKind = 5,
-    FiveOfAKind = 6
+    FiveOfAKind = 6,
 }
 
 class Hand {
@@ -50,7 +64,7 @@ class Hand {
     constructor(string: string) {
         const [cardsString, bidString] = string.split(" ");
         const cards = cardsString.split("").map(convertToEnum);
-        
+
         this.cards = cards;
         this.bid = parseInt(bidString);
     }
@@ -70,10 +84,12 @@ class Hand {
         }
 
         groups.sort((a, b) => b.length - a.length);
-        
+
         switch (groups[0].length) {
-            case 5: return HandType.FiveOfAKind;
-            case 4: return HandType.FourOfAKind;
+            case 5:
+                return HandType.FiveOfAKind;
+            case 4:
+                return HandType.FourOfAKind;
             case 3:
                 if (groups[1].length === 2) {
                     return HandType.FullHouse;
@@ -82,14 +98,15 @@ class Hand {
                 if (groups[1].length === 2) {
                     return HandType.TwoPair;
                 } else return HandType.OnePair;
-            case 1: return HandType.HighCard;
+            case 1:
+                return HandType.HighCard;
         }
         return HandType.FiveOfAKind;
-    }
+    };
 
     public display = (): string => {
-        return this.cards.map(card => Card[card]).join(", ");
-    }
+        return this.cards.map((card) => Card[card]).join(", ");
+    };
 }
 
 const sorter = (a: Hand, b: Hand): number => {
@@ -107,16 +124,18 @@ const sorter = (a: Hand, b: Hand): number => {
         }
         return 1;
     }
-}
+};
 
-const hands = Deno.readTextFileSync("input.txt").split("\n").map(line => new Hand(line));
+const hands = Deno.readTextFileSync("input.txt").split("\n").map((line) =>
+    new Hand(line)
+);
 
-hands.sort(sorter)
+hands.sort(sorter);
 
 let totalWinnings = 0;
 
 for (const [i, hand] of hands.entries()) {
-    totalWinnings += (hand.bid * (hands.length - i));
+    totalWinnings += hand.bid * (hands.length - i);
 }
 
 console.log(`Total winnings: ${totalWinnings}`);

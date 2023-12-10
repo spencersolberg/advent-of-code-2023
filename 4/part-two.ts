@@ -8,8 +8,11 @@ class Scratchcard {
 
         const id = parseInt([...scratchcardString.matchAll(cardRegex)][0][1]);
 
-        const [winningNumbersString, numbersString] = scratchcardString.replace(cardRegex, "").split("|").map(string => string.trim());
-        
+        const [winningNumbersString, numbersString] = scratchcardString.replace(
+            cardRegex,
+            "",
+        ).split("|").map((string) => string.trim());
+
         const numberRegex = /([0-9]+)/g;
         const winningNumbers: number[] = [];
         const numbers: number[] = [];
@@ -28,7 +31,9 @@ class Scratchcard {
     }
 
     get winners(): number[] {
-        return this.numbers.filter(number => this.winningNumbers.includes(number));
+        return this.numbers.filter((number) =>
+            this.winningNumbers.includes(number)
+        );
     }
 
     get value(): number {
@@ -70,7 +75,9 @@ class Scratchcard {
 
 // console.log(`Scratchcard Total: ${processed.length}`);
 
-const scratchcards = Deno.readTextFileSync("input.txt").split("\n").map(line => new Scratchcard(line));
+const scratchcards = Deno.readTextFileSync("input.txt").split("\n").map(
+    (line) => new Scratchcard(line),
+);
 const counts: Map<number, number> = new Map();
 
 for (const scratchcard of scratchcards) {
@@ -81,14 +88,14 @@ let total = 0;
 
 for (const scratchcard of scratchcards) {
     // rome-ignore lint/style/noNonNullAssertion: <explanation>
-    const count = counts.get(scratchcard.id)!
+    const count = counts.get(scratchcard.id)!;
     total += count;
 
     for (const rewardID of scratchcard.rewardIDs) {
         if (counts.has(rewardID)) {
             // rome-ignore lint/style/noNonNullAssertion: <explanation>
-            const  currentCount = counts.get(rewardID)!;
-            counts.set(rewardID, currentCount + count)
+            const currentCount = counts.get(rewardID)!;
+            counts.set(rewardID, currentCount + count);
         }
     }
 }

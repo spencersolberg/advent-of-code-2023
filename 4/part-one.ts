@@ -4,8 +4,11 @@ class Scratchcard {
 
     constructor(scratchcardString: string) {
         const cardRegex = /Card\s+[0-9]+:/g;
-        const [winningNumbersString, numbersString] = scratchcardString.replace(cardRegex, "").split("|").map(string => string.trim());
-        
+        const [winningNumbersString, numbersString] = scratchcardString.replace(
+            cardRegex,
+            "",
+        ).split("|").map((string) => string.trim());
+
         const numberRegex = /([0-9]+)/g;
         const winningNumbers: number[] = [];
         const numbers: number[] = [];
@@ -23,7 +26,9 @@ class Scratchcard {
     }
 
     get winners(): number[] {
-        return this.numbers.filter(number => this.winningNumbers.includes(number));
+        return this.numbers.filter((number) =>
+            this.winningNumbers.includes(number)
+        );
     }
 
     get value(): number {
@@ -33,7 +38,12 @@ class Scratchcard {
     }
 }
 
-const scratchcards = Deno.readTextFileSync("input.txt").split("\n").map(line => new Scratchcard(line));
+const scratchcards = Deno.readTextFileSync("input.txt").split("\n").map(
+    (line) => new Scratchcard(line),
+);
 
-const sum = scratchcards.reduce((accumulator, scratchcard) => accumulator + scratchcard.value, 0)
+const sum = scratchcards.reduce(
+    (accumulator, scratchcard) => accumulator + scratchcard.value,
+    0,
+);
 console.log(`Sum: ${sum}`);

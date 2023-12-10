@@ -1,13 +1,14 @@
 const input = await Deno.readTextFile("input.txt");
 
 const separateNumbers = (line: string): string[] => {
-    const regex = /(?=([0-9]|one|two|three|four|five|six|seven|eight|nine|zero))/g;
+    const regex =
+        /(?=([0-9]|one|two|three|four|five|six|seven|eight|nine|zero))/g;
 
-    const matches = [...line.matchAll(regex)].map(match => match[1]);
+    const matches = [...line.matchAll(regex)].map((match) => match[1]);
     console.log({ line, matches });
 
-    return matches
-}
+    return matches;
+};
 
 const numerify = (numberStrings: string[]): number[] => {
     const numbers: number[] = [];
@@ -23,12 +24,12 @@ const numerify = (numberStrings: string[]): number[] => {
                 .replace("seven", "7")
                 .replace("eight", "8")
                 .replace("nine", "9")
-                .replace("zero", "0")
-        ))
+                .replace("zero", "0"),
+        ));
     }
 
     return numbers;
-}
+};
 
 let sum = 0;
 
@@ -43,7 +44,7 @@ for (const line of input.split("\n")) {
     }
 
     const value = parseInt(`${first}${last}`);
-    sum += value
+    sum += value;
 }
 
 console.log(sum);

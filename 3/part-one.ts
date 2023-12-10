@@ -1,13 +1,13 @@
 type PartNumber = {
-    value: number,
-    row: number,
-    index: number
-}
+    value: number;
+    row: number;
+    index: number;
+};
 
 type Space = {
-    row: number,
-    index: number
-}
+    row: number;
+    index: number;
+};
 
 const schematic = Deno.readTextFileSync("input.txt");
 const rows = schematic.split("\n");
@@ -19,12 +19,12 @@ for (const [i, row] of rows.entries()) {
     const regex = /[0-9]{1,3}/g;
 
     const matches = [...row.matchAll(regex)];
-    
-    partNumbers.push(...matches.map(match => ({
+
+    partNumbers.push(...matches.map((match) => ({
         value: parseInt(match[0]),
         row: i,
         // rome-ignore lint/style/noNonNullAssertion: <explanation>
-        index: match.index!
+        index: match.index!,
     })));
 }
 
@@ -33,7 +33,7 @@ for (const [i, row] of rows.entries()) {
 const isValid = (partNumber: PartNumber): boolean => {
     const adjacentSpaces = getAdjacentSpaces(partNumber);
     return hasSymbol(adjacentSpaces);
-}
+};
 
 const getAdjacentSpaces = (partNumber: PartNumber): Space[] => {
     const columnCount = rows[0].length;
@@ -45,38 +45,38 @@ const getAdjacentSpaces = (partNumber: PartNumber): Space[] => {
     for (let i = 0; i < valueLength; i++) {
         const topLeft = {
             y: partNumber.row - 1,
-            x: partNumber.index + i - 1
-        }
+            x: partNumber.index + i - 1,
+        };
         const topMiddle = {
             y: partNumber.row - 1,
-            x: partNumber.index + i
-        }
+            x: partNumber.index + i,
+        };
         const topRight = {
-            y: partNumber.row -1,
-            x: partNumber.index + i + 1
-        }
+            y: partNumber.row - 1,
+            x: partNumber.index + i + 1,
+        };
 
         const left = {
             y: partNumber.row,
-            x: partNumber.index + i - 1
-        }
+            x: partNumber.index + i - 1,
+        };
         const right = {
             y: partNumber.row,
-            x: partNumber.index + i + 1
-        }
-        
+            x: partNumber.index + i + 1,
+        };
+
         const bottomLeft = {
             y: partNumber.row + 1,
-            x: partNumber.index + i - 1
-        }
+            x: partNumber.index + i - 1,
+        };
         const bottomMiddle = {
             y: partNumber.row + 1,
-            x: partNumber.index + i
-        }
+            x: partNumber.index + i,
+        };
         const bottomRight = {
             y: partNumber.row + 1,
-            x: partNumber.index + i + 1
-        }
+            x: partNumber.index + i + 1,
+        };
 
         if (topLeft.y >= 0 && topLeft.x >= 0) {
             adjacentSpaces.push({ row: topLeft.y, index: topLeft.x });
@@ -107,21 +107,24 @@ const getAdjacentSpaces = (partNumber: PartNumber): Space[] => {
     }
 
     return adjacentSpaces;
-}
+};
 
 const hasSymbol = (spaces: Space[]): boolean => {
     const regex = /[^0-9\.]/g;
     for (const space of spaces) {
         const character = rows[space.row].split("")[space.index];
-        if(character.match(regex)) return true
+        if (character.match(regex)) return true;
     }
 
     return false;
-}
+};
 
 const validPartNumbers = partNumbers.filter(isValid);
 
-const sum = validPartNumbers.reduce((accumulator, partNumber) => accumulator + partNumber.value, 0);
+const sum = validPartNumbers.reduce(
+    (accumulator, partNumber) => accumulator + partNumber.value,
+    0,
+);
 
 console.log(`Sum: ${sum}`);
 

@@ -6,7 +6,7 @@ enum AlmanacMapType {
     Light,
     Temperature,
     Humidity,
-    Location
+    Location,
 }
 
 class AlmanacMapLine {
@@ -14,7 +14,11 @@ class AlmanacMapLine {
     sourceRangeStart: number;
     range: number;
 
-    constructor(destinationRangeStart: number, sourceRangeStart: number, range: number) {
+    constructor(
+        destinationRangeStart: number,
+        sourceRangeStart: number,
+        range: number,
+    ) {
         this.destinationRangeStart = destinationRangeStart;
         this.sourceRangeStart = sourceRangeStart;
         this.range = range;
@@ -58,14 +62,15 @@ class AlmanacMap {
             .split("\n")
             .slice(1)
             .map(
-                line => line.split(" ").map(
-                    num => parseInt(num)
-                )
+                (line) =>
+                    line.split(" ").map(
+                        (num) => parseInt(num),
+                    ),
             )
             .map(
-                array => new AlmanacMapLine(array[0], array[1], array[2])
+                (array) => new AlmanacMapLine(array[0], array[1], array[2]),
             );
-        
+
         this.type = type;
         this.lines = lines;
     }
@@ -73,13 +78,16 @@ class AlmanacMap {
     public getCorresponding = (number: number): number => {
         let corresponding = number;
         for (const line of this.lines) {
-            if (line.sourceRangeStart <= number && number <= line.sourceRangeStart + line.range - 1) {
-                corresponding = line.destinationRangeStart + (number - line.sourceRangeStart)
+            if (
+                line.sourceRangeStart <= number &&
+                number <= line.sourceRangeStart + line.range - 1
+            ) {
+                corresponding = line.destinationRangeStart +
+                    (number - line.sourceRangeStart);
             }
         }
         return corresponding;
-    }
-
+    };
 }
 
 class Almanac {
@@ -87,8 +95,9 @@ class Almanac {
     maps: AlmanacMap[];
 
     constructor(string: string) {
-        this.seeds = string.split("\n")[0].replace("seeds: ", "").split(" ").map(num => parseInt(num));
-        this.maps = string.split("\n\n").slice(1).map(m => new AlmanacMap(m));
+        this.seeds = string.split("\n")[0].replace("seeds: ", "").split(" ")
+            .map((num) => parseInt(num));
+        this.maps = string.split("\n\n").slice(1).map((m) => new AlmanacMap(m));
     }
 }
 

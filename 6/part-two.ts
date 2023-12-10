@@ -26,9 +26,13 @@ class Sheet {
     constructor(string: string) {
         const regex = /(\d+)/g;
         const lines = string.split("\n");
-        
-        const time = parseInt([...lines[0].matchAll(regex)].map(match => match[1]).join(""));
-        const record = parseInt([...lines[1].matchAll(regex)].map(match => match[1]).join(""));
+
+        const time = parseInt(
+            [...lines[0].matchAll(regex)].map((match) => match[1]).join(""),
+        );
+        const record = parseInt(
+            [...lines[1].matchAll(regex)].map((match) => match[1]).join(""),
+        );
 
         this.races = [new Race(time, record)];
     }
@@ -36,8 +40,11 @@ class Sheet {
 
 const sheet = new Sheet(Deno.readTextFileSync("input.txt"));
 
-const winners = sheet.races.map(race => race.winners.length);
+const winners = sheet.races.map((race) => race.winners.length);
 
-const product = winners.reduce((accumulator, currentValue) => accumulator * currentValue, 1);
+const product = winners.reduce(
+    (accumulator, currentValue) => accumulator * currentValue,
+    1,
+);
 
 console.log(`Product: ${product}`);

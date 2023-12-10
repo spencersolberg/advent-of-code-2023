@@ -1,8 +1,8 @@
 const input = await Deno.readTextFile("input.txt");
 
-const digitsOnly = input.replaceAll(/[a-z]*/g, "")
+const digitsOnly = input.replaceAll(/[a-z]*/g, "");
 
-let sum = 0
+let sum = 0;
 
 for (const line of digitsOnly.split("\n")) {
     const digits = line.split("");
@@ -13,7 +13,7 @@ for (const line of digitsOnly.split("\n")) {
         continue;
     }
 
-    sum += parseInt(`${first}${last}`)
+    sum += parseInt(`${first}${last}`);
 }
 
-console.log(sum)
+console.log(sum);

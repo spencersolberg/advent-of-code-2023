@@ -10,21 +10,21 @@ type Pipe = {
 };
 
 enum Direction {
-    North,
-    East,
-    South,
-    West,
+    North = 0,
+    East = 1,
+    South = 2,
+    West = 3,
 }
 
 class PipeMap {
-    pipes: string[][];
+    lines: string[][];
 
     constructor(string: string) {
-        this.pipes = string.split("\n").map((line) => line.split(""));
+        this.lines = string.split("\n").map((line) => line.split(""));
     }
 
     get startingPosition(): Point {
-        for (const [y, row] of this.pipes.entries()) {
+        for (const [y, row] of this.lines.entries()) {
             for (const [x, cell] of row.entries()) {
                 if (cell === "S") return { x, y };
             }
@@ -67,7 +67,7 @@ class PipeMap {
                 // console.log(`${Direction[direction]} for (${currentPoint.x}, ${currentPoint.y}) is (${nextPoint.x}, ${nextPoint.y})`);
                 let nextSymbol;
                 try {
-                    nextSymbol = this.pipes[nextPoint.y][nextPoint.x];
+                    nextSymbol = this.lines[nextPoint.y][nextPoint.x];
                 } catch (_) {
                     continue;
                 }
@@ -80,7 +80,7 @@ class PipeMap {
                 }
 
                 const currentSymbol =
-                    this.pipes[currentPoint.y][currentPoint.x];
+                    this.lines[currentPoint.y][currentPoint.x];
 
                 if (
                     PipeMap.getAllowedSymbols(currentSymbol, direction)
@@ -108,6 +108,8 @@ class PipeMap {
         }
 
         // console.log(`Complete: ${loop}`);
+
+        // loop[0] = { ...loop[0], symbol: PipeMap.deduceStartingPipe(loop[0], loop[1], loop[loop.length - 1]) };
 
         return loop;
     }
@@ -198,5 +200,206 @@ class PipeMap {
                 throw new Error(`Current symbol invalid: ${currentSymbol}`);
         }
     };
+
+    static getExpansion = (
+        symbol: string,
+        direction: Direction,
+    ): string | null => {
+        switch (symbol) {
+            case "S":
+                return null;
+            case "|": {
+                switch (direction) {
+                    case Direction.North:
+                        return "|";
+                    case Direction.East:
+                        return null;
+                    case Direction.South:
+                        return "|";
+                    case Direction.West:
+                        return null;
+                }
+            }
+            case "-": {
+                switch (direction) {
+                    case Direction.North:
+                        return null;
+                    case Direction.East:
+                        return "-";
+                    case Direction.South:
+                        return null;
+                    case Direction.West:
+                        return "-";
+                }
+            }
+            case "L": {
+                switch (direction) {
+                    case Direction.North:
+                        return "|";
+                    case Direction.East:
+                        return "-";
+                    case Direction.South:
+                        return null;
+                    case Direction.West:
+                        return null;
+                }
+            }
+            case "J": {
+                switch (direction) {
+                    case Direction.North:
+                        return "|";
+                    case Direction.East:
+                        return null;
+                    case Direction.South:
+                        return null;
+                    case Direction.West:
+                        return "-";
+                }
+            }
+            case "7": {
+                switch (direction) {
+                    case Direction.North:
+                        return null;
+                    case Direction.East:
+                        return null;
+                    case Direction.South:
+                        return "|";
+                    case Direction.West:
+                        return "-";
+                }
+            }
+            case "F":
+                switch (direction) {
+                    case Direction.North:
+                        return null;
+                    case Direction.East:
+                        return "-";
+                    case Direction.South:
+                        return "|";
+                    case Direction.West:
+                        return null;
+                }
+            default:
+                throw new Error(`Current symbol invalid: ${symbol}`);
+        }
+    };
+
+    static deduceStartingPipe = (starting: Pipe, first: Pipe, last: Pipe): string => {
+        let firstDirection: Direction;
+        if (first.position.y < starting.position.y) {
+            firstDirection = Direction.North;
+        } else if (first.position.x > starting.position.x) {
+            firstDirection = Direction.East;
+        } else {
+            firstDirection = Direction.South;
+        }
+
+        let lastDirection: Direction;
+        if (last.position.x > starting.position.x && firstDirection < Direction.East) {
+            lastDirection = Direction.East;
+        } else if (last.position.y > starting.position.y && firstDirection < Direction.South) {
+            lastDirection = Direction.South;
+        } else {
+            lastDirection = Direction.West;
+        }
+
+        switch ([firstDirection, lastDirection]) {
+            case [Direction.North, Direction.East]: return "L";
+            case [Direction.North, Direction.South]: return "|";
+            case [Direction.North, Direction.West]: return "J";
+            case [Direction.East, Direction.South]: return "F";
+            case [Direction.East, Direction.West]: return "-";
+            case [Direction.South, Direction.West]: return "7";
+            default:
+                throw new Error(`Invalid combination: ${Direction[Direction.South]}, ${Direction[Direction.West]}`);
+        }
+
+    }
 }
 const pipeMap = new PipeMap(Deno.readTextFileSync("input.txt"));
+
+const loopMap: string[][] = Array(pipeMap.lines.length).fill(null).map(
+    () => Array(pipeMap.lines[0].length).fill(".")
+);
+
+for (const pipe of pipeMap.loop) {
+    loopMap[pipe.position.y][pipe.position.x] = pipe.symbol;
+}
+
+// // const expanded = new Array(pipeMap.lines.length * 2).fill(new Array(pipeMap.lines[0].length * 2).fill("."));
+// const expanded: string[][] = Array((pipeMap.lines.length * 2) - 3).fill(null).map(
+//     () => Array(pipeMap.lines[0].length * 2).fill("."),
+// );
+
+// for (const pipe of pipeMap.loop) {
+//     const y = pipe.position.y * 2;
+//     const x = pipe.position.x * 2;
+//     expanded[y][x] = pipe.symbol;
+
+//     const directions = [
+//         { direction: Direction.North, offset: { y: -1, x: 0 } },
+//         { direction: Direction.East, offset: { y: 0, x: 1 } },
+//         { direction: Direction.South, offset: { y: 1, x: 0 } },
+//         { direction: Direction.West, offset: { y: 0, x: -1 } },
+//     ];
+
+//     for (const { direction, offset } of directions) {
+//         const expansion = PipeMap.getExpansion(pipe.symbol, direction);
+//         try {
+//             expanded[y + offset.y][x + offset.x] = expansion || expanded[y + offset.y][x + offset.x];
+//         } catch (_) {}
+//     }
+
+//     for (let row = 0; row < pipeMap.lines.length; row++) {
+//         for (let col = 0; col < pipeMap.lines[0].length; col++) {
+//             if (pipeMap.lines[row][col] === ".") {
+//                 expanded[row * 2][col * 2] = "*";
+//             }
+//         }
+//     }
+// }
+
+// // console.log(expanded);
+
+let area = 0;
+
+for (const [y, row] of loopMap.entries()) {
+    let inside = false;
+    let lastSymbol: string | null = null;
+    for (const [x, char] of row.entries()) {
+        switch (char) {
+            case "|":
+                inside = !inside;
+                break;
+            case "L": {
+                lastSymbol = "L";
+                break;
+            }
+            case "7": {
+                if (lastSymbol === "L") inside = !inside;
+                lastSymbol = null;
+                break;
+            }
+            case "F": {
+                lastSymbol = "F";
+                break;
+            }
+            case "J": {
+                if (lastSymbol === "F") inside = !inside;
+                lastSymbol = null;
+                break;
+            }
+            case ".":
+                if (inside) {
+                    area++;
+                    loopMap[y][x] = "*"
+                }
+                break;
+            default: break;
+        }
+    }
+}
+// console.log(loopMap.map((line) => line.join("")).join("\n"));
+Deno.writeTextFileSync("output.txt", loopMap.map(line => line.join("")).join("\n"));
+
+console.log(`Area: ${area}`);

@@ -79,6 +79,26 @@ export class Terrain {
         return null;
     }
 
+    public getSmudgeReflection(): SmudgedReflection | null {
+        const reflection = this.getReflection();
+
+        for (const [y, row] of this.grid.entries()) {
+            for (const [x, tile] of row.entries()) {
+                const desmudged = [...this.grid];
+                desmudged[y][x] = [1, 0][tile];
+
+                const terrain = new Terrain(Terrain.stringFromGrid(desmudged));
+                const smudgedReflection = terrain.getReflection();
+
+                if (smudgedReflection) {
+                    return { ...smudgedReflection, point: { row: y, column: x }};
+                }
+            }
+        }
+
+        return null;
+    }
+
     private toRotated(): Tile[][] {
         const grid: Tile[][] = [];
         for (let i = 0; i < this.grid[0].length; i++) {
@@ -101,6 +121,15 @@ enum Tile {
 export type Reflection = {
     axis: ReflectionAxis;
     start: number;
+}
+
+export type SmudgedReflection = Reflection & {
+    point: Point;
+};
+
+type Point = {
+    row: number;
+    column: number;
 }
 
 export enum ReflectionAxis {

@@ -1,0 +1,134 @@
+export class City {
+    readonly rows: Row<Block>[];
+    paths: Path[];
+    // crucibles: Crucible[];
+    // private readonly startingMin: number;
+
+    constructor(input: string) {
+        const rows: Row<Block>[] = [];
+
+        this.rows = rows;
+        // this.crucibles = [{ loss: 0, position: { row: 0, column: 0 }, previousMoves: [], isFinished: false }];
+        // this.startingMin = 120;
+    }
+
+    // public next(): void {
+    //     const newCrucibles: Crucible[] = [];
+    //     for (const [i, oldCrucible] of this.crucibles.entries()) {
+    //         if (i % 1_000 === 0) console.log(`Step progress: ${((i / this.crucibles.length) * 100).toFixed(2)}%`);
+    //         if (oldCrucible.isFinished) {
+    //             newCrucibles.push(oldCrucible);
+    //             continue;
+    //         }
+    //         for (const direction of [0, 1, 2, 3] as Direction[]) {
+    //             // console.log(`Direction: ${Direction[direction]}`)
+    //             if (oldCrucible.previousMoves.length > 0 && oldCrucible.previousMoves.every(move => move === direction)) {
+    //                 // can't move in same direction more than three times;
+    //                 // console.log(`Can't move ${Direction[direction]} more than three times`)
+    //                 continue;
+    //             }
+
+    //             const lastMove = oldCrucible.previousMoves.at(-1);
+
+    //             if (lastMove && Math.abs(lastMove - direction) === 2) {
+    //                 // can't move in opposite direction
+    //                 // console.log(`Can't move in opposite direction ${Direction[direction]}`)
+    //                 continue;
+    //             }
+
+    //             const newPosition = push(oldCrucible.position, direction);
+    //             if (this.isOutOfBounds(newPosition)) {
+    //                 // moving in this direction moves out of bounds
+    //                 // console.log(`Moving ${Direction[direction]} is out of bounds [r${newPosition.row}, c${newPosition.column}]`);
+    //                 continue;
+    //             }
+
+    //             const newCrucible = { ...oldCrucible, position: newPosition };
+    //             newCrucible.loss += this.rows[newPosition.row][newPosition.column].heatLoss;
+                
+    //             if (newCrucible.loss > this.min()) {
+    //                 // heatloss already greater than the minimum
+    //                 continue;
+    //             }
+
+    //             newCrucible.isFinished = this.isFinished(newPosition);
+    //             newCrucible.previousMoves = [ ...oldCrucible.previousMoves.slice(-2), direction ];
+
+    //             newCrucibles.push(newCrucible);
+    //         }
+    //     }
+
+    //     this.crucibles = newCrucibles;
+    // }
+
+    // public min(): number {
+    //     const finished = this.crucibles.filter(crucible => crucible.isFinished);
+    //     const min = finished.reduce((min, crucible) => Math.min(min, crucible.loss), this.startingMin);
+
+    //     return min;
+    // }
+
+    private isOutOfBounds({ row, column }: Position): boolean {
+        return (row < 0 || row >= this.rows.length || column < 0 || column >= this.rows[0].length);
+    }
+    
+    private isFinished({ row, column }: Position): boolean {
+        return (row === this.rows.length - 1 && column === this.rows[0].length - 1);
+    }
+}
+
+type Row<t> = t[];
+
+type Block = {
+    heatLoss: HeatLoss;
+    position: Position;
+}
+
+export enum HeatLoss {
+    One = 1,
+    Two = 2,
+    Three = 3,
+    Four = 4,
+    Five = 5,
+    Six = 6,
+    Seven = 7,
+    Eight = 8,
+    Nine = 9
+}
+
+enum Direction {
+    Up = 0,
+    Right = 1,
+    Down = 2,
+    Left = 3
+}
+
+type Position = {
+    row: number;
+    column: number;
+}
+
+type Crucible = {
+    loss: number;
+    position: Position;
+    previousMoves: Direction[];
+    isFinished: boolean;
+}
+
+const push = (position: Position, direction: Direction): Position => {
+    const [differenceRow, differenceColumn] =
+        [[-1, 0], [0, 1], [1, 0], [0, -1]][direction];
+
+    return {
+        row: position.row + differenceRow,
+        column: position.column + differenceColumn,
+    };
+};
+
+class Path {
+    steps: Block[];
+
+    constructor(steps: Block[]) {
+        this.steps = steps;
+    }
+}

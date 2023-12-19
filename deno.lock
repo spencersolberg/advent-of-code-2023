@@ -2,9 +2,45 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:@biomejs/biome": "npm:@biomejs/biome@1.4.1",
       "npm:ts-priority-queue": "npm:ts-priority-queue@0.1.1"
     },
     "npm": {
+      "@biomejs/biome@1.4.1": {
+        "integrity": "sha512-JccVAwPbhi37pdxbAGmaOBjUTKEwEjWAhl7rKkVVuXHo4MLASXJ5HR8BTgrImi4/7rTBsGz1tgVD1Kwv1CHGRg==",
+        "dependencies": {
+          "@biomejs/cli-darwin-arm64": "@biomejs/cli-darwin-arm64@1.4.1",
+          "@biomejs/cli-darwin-x64": "@biomejs/cli-darwin-x64@1.4.1",
+          "@biomejs/cli-linux-arm64": "@biomejs/cli-linux-arm64@1.4.1",
+          "@biomejs/cli-linux-x64": "@biomejs/cli-linux-x64@1.4.1",
+          "@biomejs/cli-win32-arm64": "@biomejs/cli-win32-arm64@1.4.1",
+          "@biomejs/cli-win32-x64": "@biomejs/cli-win32-x64@1.4.1"
+        }
+      },
+      "@biomejs/cli-darwin-arm64@1.4.1": {
+        "integrity": "sha512-PZWy2Idndqux38p6AXSDQM2ldRAWi32bvb7bMbTN0ALzpWYMYnxd71ornatumSSJYoNhKmxzDLq+jct7nZJ79w==",
+        "dependencies": {}
+      },
+      "@biomejs/cli-darwin-x64@1.4.1": {
+        "integrity": "sha512-soj3BWhnsM1M2JlzR09cibUzG1owJqetwj/Oo7yg0foijo9lNH9XWXZfJBYDKgW/6Fomn+CC2EcUS+hisQzt9g==",
+        "dependencies": {}
+      },
+      "@biomejs/cli-linux-arm64@1.4.1": {
+        "integrity": "sha512-YIZqfJUg4F+fPsBTXxgD7EU2E5OAYbmYSl/snf4PevwfQCWE/omOFZv+NnIQmjYj9I7ParDgcJvanoA3/kO0JQ==",
+        "dependencies": {}
+      },
+      "@biomejs/cli-linux-x64@1.4.1": {
+        "integrity": "sha512-9YOZw3qBd/KUj63A6Hn2zZgzGb2nbESM0qNmeMXgmqinVKM//uc4OgY5TuKITuGjMSvcVxxd4dX1IzYjV9qvNQ==",
+        "dependencies": {}
+      },
+      "@biomejs/cli-win32-arm64@1.4.1": {
+        "integrity": "sha512-nWQbvkNKxYn/kCQ0yVF8kCaS3VzaGvtFSmItXiMknU4521LDjJ7tNWH12Gol+pIslrCbd4E1LhJa0a3ThRsBVg==",
+        "dependencies": {}
+      },
+      "@biomejs/cli-win32-x64@1.4.1": {
+        "integrity": "sha512-88fR2CQxQ4YLs2BUDuywWYQpUKgU3A3sTezANFc/4LGKQFFLV2yX+F7QAdZVkMHfA+RD9Xg178HomM/6mnTNPA==",
+        "dependencies": {}
+      },
       "ts-priority-queue@0.1.1": {
         "integrity": "sha512-jNwbk4ItfTHVopnlQ/Z7UUlbF1TNsdXS2cb1W8kI6lm8UauIjs8CYSOEh1E/yrIEhl+HVFUMp60ma6fKuvBhBQ==",
         "dependencies": {}
@@ -13,6 +49,7 @@
   },
   "redirects": {
     "https://deno.land/std/assert/mod.ts": "https://deno.land/std@0.209.0/assert/mod.ts",
+    "https://esm.sh/immutable": "https://esm.sh/immutable@5.0.0-beta.4",
     "https://esm.sh/ts-priority-queue": "https://esm.sh/ts-priority-queue@0.1.1"
   },
   "remote": {
@@ -48,7 +85,9 @@
     "https://deno.land/std@0.209.0/assert/unimplemented.ts": "4e3e504792c87c485dbc5f4020489d8806ef697741403af2008dfa7b5a4711e8",
     "https://deno.land/std@0.209.0/assert/unreachable.ts": "1af8c99421cc5fb7332454b2b9eca074a4e394895a180bc837750dedcca75338",
     "https://deno.land/std@0.209.0/fmt/colors.ts": "34b3f77432925eb72cf0bfb351616949746768620b8e5ead66da532f93d10ba2",
+    "https://esm.sh/immutable@5.0.0-beta.4": "941757d5baa45ac0c56a15c2b392f403b5eb3ae8ba96939fa5c41d679b393ea3",
     "https://esm.sh/ts-priority-queue@0.1.1": "39c60e1f65f0df40bd3349bf19fe4641d3df7aa3fdfd52f7999079da90730c83",
+    "https://esm.sh/v135/immutable@5.0.0-beta.4/denonext/immutable.mjs": "5b6de06fcf3e02dfb749f842bd363359042f79f756745837495f6d4924572ada",
     "https://esm.sh/v135/ts-priority-queue@0.1.1/denonext/ts-priority-queue.mjs": "909597b296330789a7229816485ffd4ed1ce23974960e462b4d4e3fe4d8612ad"
   }
 }
